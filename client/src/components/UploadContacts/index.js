@@ -50,7 +50,6 @@ const UploadContact = () => {
     setFileState(event.target.files[0]);
     console.log(event.target.files[0]);
   };
-
   const sendUploadedFile = async (e) => {
     e.preventDefault();
     let data = {};

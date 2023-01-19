@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  #Mongdb Services
+  mongo_db:
+    container_name: mongo_c
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+
+  server:
+    build: ./server
+    container_name: server_c
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/zmailer/server
+      - /zmailer/server/node_modules
+    env_file:
+      - ./server/production.env
+    depends_on:
+      - mongo_db
+
+  #React services
+  client:
+    build: ./client
+    container_name: client_c
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/zmailer/client
+      - /zmailer/client/node_modules
+    stdin_open: true
+    tty: true
+
+#Create volumes
+volumes:
+  mongo_db: {}
